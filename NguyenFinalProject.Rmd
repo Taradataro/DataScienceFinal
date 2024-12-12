@@ -1,0 +1,112 @@
+---
+title: "Final Project"
+author: "Trang Nguyen"
+date: "2024-11-28"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tm)
+library(tidyverse)
+library(wordcloud)
+library(readxl)
+library(ggplot2)
+library(nycflights13)
+library(plotly)
+library(DT)
+library(stringr)
+library(tinytex)
+```
+
+
+
+
+
+##Calories
+The mean daily calorie intake is equal to or greater than 2000 calories
+The mean daily calorie intake is less than 2000 calories
+$H_0:\mu \ge 2000$ vs $H_0:\mu < 2000$
+
+##Caffein
+The mean daily caffeine intake is greater than or equal to 400 mg
+The mean daily caffeine intake is less than 400 mg
+$H_0:\mu \ge 400$ vs $H_0:\mu < 400$
+
+##Sleep hour
+The mean daily sleep duration is greater than or equal to 8 hours
+The mean daily sleep duration is less than 8 hours
+$H_0:\mu \ge 8$ vs $H_0:\mu < 8$
+
+
+```{r}
+Nguyen<-read_excel("~/Desktop/Fall 2024/Data 211 Data Science and Visualization/Final week /Nguyen data.xlsx")
+
+
+## Calculate T test
+
+cal_test <- t.test(Nguyen$`Total Calories`, mu = 2000, alternative = "less")
+cal_test
+
+caff_test <- t.test(Nguyen$`Caffein (mg)`, mu = 400, alternative = "less")
+caff_test
+
+sleep_test <- t.test(Nguyen$`Hour of sleep`, mu = 8, alternative = "less")
+sleep_test
+
+
+
+##ggplot between weight vs independent variable
+ggplot(data=Nguyen, aes(x = `Total Calories`, y = `Weight (lbs)`)) +
+  geom_point() +
+  labs(
+    title = "Weight vs Calories",
+    x = "Food Calories",
+    y = "Weight (lbs)")
+
+
+
+ggplot(Nguyen, aes(x = `Hour of sleep`, y = `Weight (lbs)`)) +
+  geom_point() +
+  labs(
+    title = "Weight vs. Hours of Sleep",
+    x = "Hours of Sleep",
+    y = "Weight (lbs)")
+
+ggplot(Nguyen, aes(x = `Caffein (mg)`, y = `Weight (lbs)`)) +
+  geom_point()+
+  labs(
+    title = "Weight vs. Caffeine Intake",
+    x = "Caffeine (mg)",
+    y = "Weight (lbs)")
+
+
+##calculate mean
+mean_calories <- mean(Nguyen$`Total Calories`, na.rm = TRUE)
+mean_caffeine <- mean(Nguyen$`Caffein (mg)`, na.rm = TRUE)
+mean_sleep <- mean(Nguyen$`Hour of sleep`, na.rm = TRUE)
+
+thresholds <- c(2000, 400, 8)
+
+summary_data <- data.frame(
+  Metric = c("Calories", "Caffeine", "Sleep"),
+  Mean = c(mean_calories, mean_caffeine, mean_sleep),
+  Threshold = thresholds)
+
+summary_data
+
+
+ggplot(summary_data, aes(x = Metric)) +
+  geom_bar(aes(y = Mean, fill = "Mean"), stat = "identity", position = "dodge") +
+  geom_bar(aes(y = Threshold, fill = "Threshold"), stat = "identity", position = "dodge", alpha = 0.6) +
+  labs(x = "Variable",y = "Values",fill = "Legend") 
+
+```
+Since the all $p$-value is less than $\alpha = 0.05$. Therefore, we reject the $H_0$. At a $5\%$ significance level. These results indicate that my intake and sleep habits are consistently below recommended levels.
+
+
