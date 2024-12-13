@@ -31,17 +31,17 @@ library(tinytex)
 ##Calories
 The mean daily calorie intake is equal to or greater than 2000 calories
 The mean daily calorie intake is less than 2000 calories
-$H_0:\mu \ge 2000$ vs $H_0:\mu < 2000$
+$H_0:\mu{calories} \ge 2000$ vs $H_0:\mu{calories} < 2000$
 
 ##Caffein
 The mean daily caffeine intake is greater than or equal to 400 mg
 The mean daily caffeine intake is less than 400 mg
-$H_0:\mu \ge 400$ vs $H_0:\mu < 400$
+$H_0:\mu{caffein} \ge 400$ vs $H_0:\mu{caffein} < 400$
 
 ##Sleep hour
 The mean daily sleep duration is greater than or equal to 8 hours
 The mean daily sleep duration is less than 8 hours
-$H_0:\mu \ge 8$ vs $H_0:\mu < 8$
+$H_0:\mu{sleep} \ge 8$ vs $H_0:\mu{sleep} < 8$
 
 
 ```{r}
@@ -102,11 +102,10 @@ summary_data
 
 
 ggplot(summary_data, aes(x = Metric)) +
-  geom_bar(aes(y = Mean, fill = "Mean"), stat = "identity", position = "dodge") +
-  geom_bar(aes(y = Threshold, fill = "Threshold"), stat = "identity", position = "dodge", alpha = 0.6) +
+  geom_bar(aes(y = Mean, fill = "Mean"), stat = "identity", position = "dodge",width = 0.6) +
+  geom_bar(aes(y = Threshold, fill = "Threshold"), stat = "identity", position = "dodge",width = 0.4,alpha = 0.6) +
   labs(x = "Variable",y = "Values",fill = "Legend") 
 
 ```
-Since the all $p$-value is less than $\alpha = 0.05$. Therefore, we reject the $H_0$. At a $5\%$ significance level. These results indicate that my intake and sleep habits are consistently below recommended levels.
-
+Since the all $p$-value is less than $\alpha = 0.05$. Therefore, we reject the $H_0$. At a $5\%$ significance level. These results indicate that my intake and sleep habits are consistently below recommended levels. However, weight does not show a significant change based on these factors, suggesting other variables may influence weight stability.
 
